@@ -99,18 +99,59 @@ public class Program {
         return list;
     }
 
+    public static boolean canBeIncreasing(int[] nums) {
+
+        boolean noDecentOrEven = true;
+
+        List<Integer> intList = new ArrayList<>(nums.length);
+        for (int i : nums) {
+            intList.add(i);
+        }
+
+        for (int i = 0; i < intList.size(); i++) {
+            noDecentOrEven = true; //Reset our return variable for each list we have to go through.
+            List<Integer> tempList = new ArrayList<>(); // List to hold temporary values
+            for (int j = 0; j < intList.size(); j++) { // We fill up the list but skip one element.
+                if (i != j) { // Which is the element corresponding to the index value.
+                    tempList.add(intList.get(j));
+                }
+            }
+            for (int j = 0; j < tempList.size() - 1; j++) { //We iterate through the temporary list which is size n-1
+
+                if (tempList.get(j) >= tempList.get(j + 1)) { //If a prior element J is bigger than J+ or = we know the list isn't steadily increasing.
+                    noDecentOrEven = false; // And therefore we set our output element to false.
+
+                    break; // Force temination of loop (and check the next temp list)
+                }
+
+            }
+            if (noDecentOrEven)
+                break; // If our value wasn't set to false at any point. We found an ascending list, no need to check the rest. Break out of loop.
+
+        }
+        return noDecentOrEven;
+    }
+
 
     public static void main(String[] args) {
         defangIPaddr("1.1.1.1.1");
-        System.out.println(numJewelsInStones("aabc", "aaAAb"));
-        System.out.println(restoreString("codeleet", new int[]{4, 5, 6, 7, 0, 2, 1, 3}));
-        System.out.println(interpret("G()()()()(al)"));
+        //System.out.println(numJewelsInStones("aabc", "aaAAb"));
+        //System.out.println(restoreString("codeleet", new int[]{4, 5, 6, 7, 0, 2, 1, 3}));
+        //System.out.println(interpret("G()()()()(al)"));
         String ruleKey = "color", ruleValue = "silver";
         List<List<String>> list = List.of(List.of("phone", "blue", "pixel"), List.of("computer", "silver", "lenovo"), List.of("phone", "gold", "iphone"));
-        System.out.println(countMatches(list, ruleKey, ruleValue));
+        //System.out.println(countMatches(list, ruleKey, ruleValue));
         int[][] queens = new int[][]{{0, 1}, {1, 0}, {4, 0}, {0, 4}, {3, 3}, {2, 4}};
         int[] king = new int[]{0, 0};
-        System.out.println(queensAttacktheKing(queens, king));
+        //System.out.println(queensAttacktheKing(queens, king));
+        int[] a = {1, 2, 10, 5, 7};
+        System.out.println(canBeIncreasing(a));
+        int[] b = {2, 3, 1, 2};
+        System.out.println(canBeIncreasing(b));
+        int[] c = {105, 924, 32, 968};
+        System.out.println(canBeIncreasing(c));
+        int[] d = {1, 1, 1, 1};
+        System.out.println(canBeIncreasing(d));
 
     }
 }
