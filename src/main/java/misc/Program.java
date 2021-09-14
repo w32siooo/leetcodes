@@ -1,8 +1,11 @@
 package misc;
 
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Arrays.asList;
 
 public class Program {
     public static String defangIPaddr(String address) {
@@ -58,6 +61,45 @@ public class Program {
     }
 
 
+    public static List<List<Integer>> queensAttacktheKing(int[][] queens, int[] king) {
+        List<List<Integer>> list = new ArrayList<>();
+
+        // Start in the kings position and go out in all directions until we hit a queen.
+        int[][] DIRS = new int[][]{{1, 1}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {-1, 1}, {1, -1}};
+        int[][] chessBoard = new int[8][8];
+
+        chessBoard[king[0]][king[1]] = 2;
+
+        for (int[] queen : queens) chessBoard[queen[0]][queen[1]] = 9;
+        int[] position = new int[2];
+        position[0] = king[0];
+        position[1] = king[1];
+        boolean run = true;
+        //direction right
+        for (int i = 0; i < DIRS.length; i++) {
+            position[0] = king[0];
+            position[1] = king[1];
+            while (run) {
+                if (position[0] + DIRS[i][0] > chessBoard.length - 1 || position[1] + DIRS[i][1] > chessBoard.length - 1 || position[0] + DIRS[i][0] < 0 || position[1] + DIRS[i][1] < 0) {
+                    run = false;
+                } else {
+                    position[0] += DIRS[i][0]; //Increment x based on the direction we are moving in
+                    position[1] += DIRS[i][1]; //Increment y based on the direction we are moving in
+                }
+
+                if (chessBoard[position[0]][position[1]] == 9) {
+                    run = false;
+                    list.add(List.of(position[0], position[1]));
+                }
+            }
+
+            run = true;
+        }
+
+        return list;
+    }
+
+
     public static void main(String[] args) {
         defangIPaddr("1.1.1.1.1");
         System.out.println(numJewelsInStones("aabc", "aaAAb"));
@@ -66,6 +108,9 @@ public class Program {
         String ruleKey = "color", ruleValue = "silver";
         List<List<String>> list = List.of(List.of("phone", "blue", "pixel"), List.of("computer", "silver", "lenovo"), List.of("phone", "gold", "iphone"));
         System.out.println(countMatches(list, ruleKey, ruleValue));
+        int[][] queens = new int[][]{{0, 1}, {1, 0}, {4, 0}, {0, 4}, {3, 3}, {2, 4}};
+        int[] king = new int[]{0, 0};
+        System.out.println(queensAttacktheKing(queens, king));
 
     }
 }
